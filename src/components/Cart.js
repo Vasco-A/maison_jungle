@@ -1,5 +1,7 @@
 import Plant from './Plant'
 
+import '../styles/Cart.css'
+
 function Cart() {
   const monsteraPrice = 8;
   const lierrePrice = 10;
@@ -7,7 +9,7 @@ function Cart() {
   const total = monsteraPrice + lierrePrice + bdfPrice;
   
   return (
-    <div>
+    <div className="lmj-cart">
       <h2> Panier </h2>
       <ul>
         <li> <Plant name="Monstera" price={monsteraPrice} /> </li>
