@@ -1,4 +1,3 @@
-//import CareScale from './CareScale'
 import PlantItem from './PlantItem'
 import '../styles/ShoppingList.css'
 
@@ -13,7 +12,7 @@ function ShoppingList() {
     }, []);
 
     return (
-        <div>
+        <div className='lmj-shopping-list'>
             <ul>
                 {categoryList.map((category) => (
                     <li key={category}> {category} </li>
