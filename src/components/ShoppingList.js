@@ -1,33 +1,46 @@
+import { useState } from 'react'
+
 import PlantItem from './PlantItem'
+import Categories from './Categories'
 import '../styles/ShoppingList.css'
 
 import { plantList } from '../datas/plantList'
 
-function ShoppingList() {
-    const categoryList = plantList.reduce((categories, plant) => {
-        if (categories.indexOf(plant.category) === -1) {
-            categories.push(plant.category);
-        }
-        return categories;
-    }, []);
+function ShoppingList({ cart, updateCart }) {
+    const [categorySelected, updateCategorySelected] = useState("")
+
+    function addToCart(name, price) {
+		const currentPlantSaved = cart.find((plant) => plant.name === name)
+		if (currentPlantSaved) {
+			const cartFilteredCurrentPlant = cart.filter(
+				(plant) => plant.name !== name
+			)
+			updateCart([
+				...cartFilteredCurrentPlant,
+				{ name, price, amount: currentPlantSaved.amount + 1 }
+			])
+		} else {
+			updateCart([...cart, { name, price, amount: 1 }])
+		}
+	}
 
     return (
         <div className='lmj-shopping-list'>
-            <ul>
-                {categoryList.map((category) => (
-                    <li key={category}> {category} </li>
-                ))}
-            </ul>
+            <Categories categorySelected={categorySelected} updateCategorySelected={updateCategorySelected} />
             <ul className='lmj-plant-list'>
-                {plantList.map(({ id, cover, name, water, light }) => (
-                    <PlantItem
-						id={id}
-						cover={cover}
-						name={name}
-						water={water}
-						light={light}
-					/>
-                ))}
+                {plantList.map(({ id, cover, name, water, light, price, category }) => 
+                    !categorySelected || categorySelected === category? (
+                    <div key={id}>
+                        <PlantItem
+                            cover={cover}
+                            name={name}
+                            water={water}
+                            light={light}
+                            price={price}
+                        />
+                        <button onClick={() => addToCart(name, price)}>Ajouter</button>
+                    </div>
+                ) : null )}
             </ul> 
         </div>
     )
